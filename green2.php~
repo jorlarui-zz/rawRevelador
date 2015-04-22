@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+</html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+
+<link rel="stylesheet" href="style.css"/>
+<?php
+
+/*
+$output = shell_exec('./dcraw -4 -D RAW_CANON_EOS_1DX.CR2');
+$output = shell_exec('./pgmToMatrix RAW_CANON_EOS_1DX.pgm');*/
+
+
+
+$homepageGreen2 = file_get_contents('g2_out');
+$verde2 = explode("\n",$homepageGreen2);
+
+
+$color = $verde2;
+for($i = 0; $i<count($color); $i++){
+$color[$i] = intval($color[$i]);
+json_encode($color);
+}
+?> 
+<script>
+
+
+       
+  
+$(function () {
+
+var color = <?php echo json_encode($color); ?>;
+var mySeries = [];	
+
+    for (var i = 0; i < color.length; i=i+1) {
+	
+	 mySeries.push([color[i]]);
+}
+console.log(mySeries[0]);
+    $('#container').highcharts({
+        chart: {
+            type: 'column',	 
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Green 2 Histogram'
+        },
+        xAxis: {
+            tickInterval: 1
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Values'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:1f} </b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+             column: {
+        pointPadding: 0,
+        borderWidth: 0,
+        groupPadding: 0,
+	 turboThreshold: 16700,
+        shadow: false
+            }
+        },
+        series: [{
+	    name: 'Green 2',
+            data: mySeries,
+		color:'#00FF00',
+
+        
+        }]
+    });
+});
+</script>
+</head>
+
+<body>
+<div id='menuTop'>
+<a class='buttonLink' href='green1.php'><p>Green 1</p></a>
+<a class='buttonLink' href='green2.php'><p>Green 2</p></a>
+<a class='buttonLink' href='red.php'><p>Red</p></a>
+<a class='buttonLink' href='blue.php'><p>Blue</p></a>
+</div>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; "></div>
+</body>
+</html>

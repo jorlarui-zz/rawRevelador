@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+</html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" href="style.css"/>
+
+<?php
+
+$homepageBlue = file_get_contents('b_out');
+$blue = explode("\n",$homepageBlue);
+
+
+$color = $blue;
+for($i = 0; $i<count($color); $i++){
+$color[$i] = intval($color[$i]);
+json_encode($color);
+}
+
+?> 
+<script>
+
+
+       
+  
+$(function () {
+
+var color = <?php echo json_encode($color); ?>;
+var mySeries = [];	
+
+    for (var i = 0; i < color.length; i=i+1) {
+	
+	 mySeries.push([color[i]]);
+}
+console.log(mySeries[0]);
+    $('#container').highcharts({
+        chart: {
+            type: 'column',	 
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Blue Histogram'
+        },
+        xAxis: {
+            tickInterval: 1
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Values'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:1f} </b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+             column: {
+        pointPadding: 0,
+        borderWidth: 0,
+        groupPadding: 0,
+	 turboThreshold: 16700,
+        shadow: false
+            }
+        },
+        series: [{
+	    name: 'Blue',
+            data: mySeries,
+		color:'#0000FF',
+
+        
+        }]
+    });
+});
+</script>
+</head>
+
+<body>
+
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; "></div>
+</body>
+</html>
